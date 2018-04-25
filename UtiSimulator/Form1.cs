@@ -35,6 +35,9 @@ namespace UtiSimulator
 
         private List<TextBox> P7_450nm;
         private List<TextBox> P7_630nm;
+
+        private List<CheckBox> checkBoxes;
+
         private int no_of_strips = 3;
         public Form1()
         {
@@ -168,15 +171,11 @@ namespace UtiSimulator
             {
                 return;
             }
-            temp = "02 " + textBoxNoStrips.Text.ToString();
-            temp = WriteAndReadCom(temp);
-            if (temp.Equals("NACK"))
+
+            no_of_strips = getNo_Of_Strips_Selected();
+            if (no_of_strips > 7 || no_of_strips < 1)
             {
-                return;
-            }
-            getNo_Of_Strips();
-            if (no_of_strips > 7 || no_of_strips < 3)
-            {
+                MessageBox.Show("Please select valid Strips to be sent:");
                 return;
             }
             for (olp = 0; olp < (no_of_strips*2); olp++)
@@ -300,12 +299,7 @@ namespace UtiSimulator
         {
             richTextBox1.Clear();
             List<TextBox> mylistvf = new List<TextBox>();
-            getNo_Of_Strips();
-            if (no_of_strips > 7 || no_of_strips < 3)
-            {
-                return;
-            }
-            for (int olp = 0; olp < (no_of_strips*2); olp++)
+            for (int olp = 0; olp < 14; olp++)
             {
 
                 switch (olp)
@@ -357,6 +351,7 @@ namespace UtiSimulator
                 for (int lp = 0; lp < 8; lp++)
                 {
                     mylistvf[lp].BackColor = Color.White;
+                    mylistvf[lp].Text = "0.0000";
                 }
 
 
@@ -369,7 +364,7 @@ namespace UtiSimulator
         {
             string temp, command;
             double xt = 0.1, dt = 5.0;
-            int sx = 3, ds = 2;
+            int sx = 3;
             List<TextBox> mylistvf = new List<TextBox>();
 
             temp = WriteAndReadCom("06");
@@ -404,22 +399,12 @@ namespace UtiSimulator
             try
             {
                 sx = int.Parse(temp);
-                ds = int.Parse(textBoxNoStrips.Text.ToString());
+                //ds = int.Parse(textBoxNoStrips.Text.ToString());
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
-
-            if (sx == ds)
-            {
-                textBoxNoStrips.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                textBoxNoStrips.BackColor = Color.Orange;
-            }
-            getNo_Of_Strips();
             if (no_of_strips > 7 || no_of_strips < 3)
             {
                 return;
@@ -505,81 +490,97 @@ namespace UtiSimulator
 
             }//loop ends here
         }
-        private void getNo_Of_Strips()
+        private int getNo_Of_Strips_Selected()
         {
-            
-            try
+            int count = 0;
+            foreach(CheckBox ch in checkBoxes)
             {
-                no_of_strips = int.Parse(textBoxNoStrips.Text.ToString());
+                if(ch.Checked)
+                {
+                    count++;
+                }
             }
-            catch (FormatException)
-            {
-                MessageBox.Show("No of Strips not a number Please edit.."); return;
-            }
-            catch (ArgumentNullException)
-            {
-                MessageBox.Show("No of Strips not a number Please edit.."); return;
-            }
-            if (no_of_strips > 7 || no_of_strips < 3)
-            {
-                MessageBox.Show("Please enter a value for \nNo of Strips between 3 - 7");
-                return;
-            }
+
+            return count;  
         }
         private void buttonPaste_Click(object sender, EventArgs e)
         {
-            getNo_Of_Strips();
+            String[] lines;
+            String[] sCells;
+            int count = 0;
+            int i = 0, k = 0;
+            String st = String.Empty;
+            List<TextBox> list450 = new List<TextBox>();
+            List<TextBox> list630 = new List<TextBox>();
+            foreach(CheckBox chb in checkBoxes)
+            {
+                chb.Checked = false;
+            }
+            
             if (no_of_strips > 7 || no_of_strips < 3)
             {
                 return;
             }
-            string s = Clipboard.GetText();
-            string[] lines  = s.Split('\n');
-            string[] sCells = lines[0].Split('\t');            
-            int count = sCells.Length;
-            int i = 0, k = 0;
-            if(count < (no_of_strips*16))
+            st = Clipboard.GetText();
+            lines  = st.Split('\n');
+            count = lines.Length-1;
+            int strips = count / 10;
+            for(i=0; i < strips; i++)
             {
-                MessageBox.Show(" Clip Board Data Length not Correct");
-                return;
-            }
-
-            for (i = 0; i < count; i += (no_of_strips * 2))
-            {
+                sCells = lines[(i * 10)].Split('\t');
+                switch(sCells[0])
+                {
+                    case "P-1 absorbance":
+                        list450 = P1_450nm;
+                        list630 = P1_630nm;
+                        checkBoxes[0].Checked = true;
+                        break;
+                    case "P-2 absorbance":
+                        list450 = P2_450nm;
+                        list630 = P2_630nm;
+                        checkBoxes[1].Checked = true;
+                        break;
+                    case "P-3 absorbance":
+                        list450 = P3_450nm;
+                        list630 = P3_630nm;
+                        checkBoxes[2].Checked = true;
+                        break;
+                    case "P-4 absorbance":
+                        list450 = P4_450nm;
+                        list630 = P4_630nm;
+                        checkBoxes[3].Checked = true;
+                        break;
+                    case "P-5 absorbance":
+                        list450 = P5_450nm;
+                        list630 = P5_630nm;
+                        checkBoxes[4].Checked = true;
+                        break;
+                    case "P-6 absorbance":
+                        list450 = P6_450nm;
+                        list630 = P6_630nm;
+                        checkBoxes[5].Checked = true;
+                        break;
+                    case "P-7 absorbance":
+                        list450 = P7_450nm;
+                        list630 = P7_630nm;
+                        checkBoxes[6].Checked = true;
+                        break;
+                }
+                for (k=0; k < 8; k++)
+                {
+                    sCells = lines[(i * 10)+k+2].Split('\t');
+                    list450[k].Text = sCells[0];
+                    list630[k].Text = sCells[1];
+                }
                 
-                P1_450nm[k].Text = sCells[i + 0];
-                P1_630nm[k].Text = sCells[i + 1];
-
-                P2_450nm[k].Text = sCells[i + 2];
-                P2_630nm[k].Text = sCells[i + 3];
-
-                P3_450nm[k].Text = sCells[i + 4];
-                P3_630nm[k].Text = sCells[i + 5];
-
-                if (no_of_strips == 3) { k++; continue; }
-
-                P4_450nm[k].Text = sCells[i + 6];
-                P4_630nm[k].Text = sCells[i + 7];
-
-                if (no_of_strips == 4) { k++; continue; }
-
-                P5_450nm[k].Text = sCells[i + 8];
-                P5_630nm[k].Text = sCells[i + 9];
-
-                if (no_of_strips == 5) { k++; continue; }
-
-                P6_450nm[k].Text = sCells[i + 10];
-                P6_630nm[k].Text = sCells[i + 11];
-
-                if (no_of_strips == 6) { k++; continue; }
-
-                P7_450nm[k].Text = sCells[i + 12];
-                P7_630nm[k].Text = sCells[i + 13];
-                k++;
-
             }
-
-
+            
+            
+            //if(count < (no_of_strips*16))
+            //{
+            //    MessageBox.Show(" Clip Board Data Length not Correct");
+            //    return;
+            //}
         }
 
         private void buttonExit_Click(object sender, EventArgs e)

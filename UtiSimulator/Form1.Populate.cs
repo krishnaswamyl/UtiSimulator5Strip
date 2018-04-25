@@ -149,6 +149,15 @@ namespace UtiSimulator
             P7_630nm.Add(textBox111);
             P7_630nm.Add(textBox112);
 
+            checkBoxes = new List<CheckBox>();
+            checkBoxes.Add(checkBox1);
+            checkBoxes.Add(checkBox2);
+            checkBoxes.Add(checkBox3);
+            checkBoxes.Add(checkBox4);
+            checkBoxes.Add(checkBox5);
+            checkBoxes.Add(checkBox6);
+            checkBoxes.Add(checkBox7);
+
         }
     }
 }

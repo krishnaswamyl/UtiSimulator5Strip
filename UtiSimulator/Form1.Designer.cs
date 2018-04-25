@@ -35,8 +35,6 @@
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxBaseLine = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxNoStrips = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -98,7 +96,7 @@
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.buttonGetResults = new System.Windows.Forms.Button();
-            this.buttonClear = new System.Windows.Forms.Button();
+            this.buttonClearStrips = new System.Windows.Forms.Button();
             this.buttonVerify = new System.Windows.Forms.Button();
             this.buttonPaste = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
@@ -175,13 +173,14 @@
             this.textBox111 = new System.Windows.Forms.TextBox();
             this.textBox112 = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.buttonClearResults = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -250,23 +249,6 @@
             this.textBoxBaseLine.Size = new System.Drawing.Size(100, 20);
             this.textBoxBaseLine.TabIndex = 3;
             this.textBoxBaseLine.Text = "0.045";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(41, 90);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(85, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "NO OF STRIPS:";
-            // 
-            // textBoxNoStrips
-            // 
-            this.textBoxNoStrips.Location = new System.Drawing.Point(132, 87);
-            this.textBoxNoStrips.Name = "textBoxNoStrips";
-            this.textBoxNoStrips.Size = new System.Drawing.Size(100, 20);
-            this.textBoxNoStrips.TabIndex = 4;
-            this.textBoxNoStrips.Text = "3";
             // 
             // label4
             // 
@@ -850,7 +832,7 @@
             // buttonCalculate
             // 
             this.buttonCalculate.BackColor = System.Drawing.Color.Orchid;
-            this.buttonCalculate.Location = new System.Drawing.Point(356, 84);
+            this.buttonCalculate.Location = new System.Drawing.Point(432, 50);
             this.buttonCalculate.Name = "buttonCalculate";
             this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
             this.buttonCalculate.TabIndex = 58;
@@ -880,7 +862,7 @@
             // buttonGetResults
             // 
             this.buttonGetResults.BackColor = System.Drawing.Color.SpringGreen;
-            this.buttonGetResults.Location = new System.Drawing.Point(443, 84);
+            this.buttonGetResults.Location = new System.Drawing.Point(516, 51);
             this.buttonGetResults.Name = "buttonGetResults";
             this.buttonGetResults.Size = new System.Drawing.Size(75, 23);
             this.buttonGetResults.TabIndex = 58;
@@ -888,22 +870,22 @@
             this.buttonGetResults.UseVisualStyleBackColor = false;
             this.buttonGetResults.Click += new System.EventHandler(this.buttonGetResults_Click);
             // 
-            // buttonClear
+            // buttonClearStrips
             // 
-            this.buttonClear.BackColor = System.Drawing.Color.OrangeRed;
-            this.buttonClear.Location = new System.Drawing.Point(530, 84);
-            this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(75, 23);
-            this.buttonClear.TabIndex = 58;
-            this.buttonClear.Text = "Clear Results";
-            this.buttonClear.UseVisualStyleBackColor = false;
-            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
+            this.buttonClearStrips.BackColor = System.Drawing.Color.OrangeRed;
+            this.buttonClearStrips.Location = new System.Drawing.Point(597, 53);
+            this.buttonClearStrips.Name = "buttonClearStrips";
+            this.buttonClearStrips.Size = new System.Drawing.Size(91, 23);
+            this.buttonClearStrips.TabIndex = 58;
+            this.buttonClearStrips.Text = "Clear Strips";
+            this.buttonClearStrips.UseVisualStyleBackColor = false;
+            this.buttonClearStrips.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // buttonVerify
             // 
             this.buttonVerify.BackColor = System.Drawing.Color.OliveDrab;
             this.buttonVerify.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.buttonVerify.Location = new System.Drawing.Point(269, 84);
+            this.buttonVerify.Location = new System.Drawing.Point(350, 51);
             this.buttonVerify.Name = "buttonVerify";
             this.buttonVerify.Size = new System.Drawing.Size(75, 23);
             this.buttonVerify.TabIndex = 57;
@@ -1680,60 +1662,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Strips to be Tested";
             // 
-            // checkBox1
+            // checkBox7
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox1.Location = new System.Drawing.Point(43, 22);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(91, 23);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "STRIP 1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox2.Location = new System.Drawing.Point(43, 51);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(91, 23);
-            this.checkBox2.TabIndex = 0;
-            this.checkBox2.Text = "STRIP 2";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox3.Location = new System.Drawing.Point(43, 80);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(91, 23);
-            this.checkBox3.TabIndex = 0;
-            this.checkBox3.Text = "STRIP 3";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox4.Location = new System.Drawing.Point(43, 109);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(91, 23);
-            this.checkBox4.TabIndex = 0;
-            this.checkBox4.Text = "STRIP 4";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox5.Location = new System.Drawing.Point(43, 138);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(91, 23);
-            this.checkBox5.TabIndex = 0;
-            this.checkBox5.Text = "STRIP 5";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox7.AutoSize = true;
+            this.checkBox7.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox7.Location = new System.Drawing.Point(43, 196);
+            this.checkBox7.Name = "checkBox7";
+            this.checkBox7.Size = new System.Drawing.Size(91, 23);
+            this.checkBox7.TabIndex = 0;
+            this.checkBox7.Text = "STRIP 7";
+            this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // checkBox6
             // 
@@ -1746,16 +1684,71 @@
             this.checkBox6.Text = "STRIP 6";
             this.checkBox6.UseVisualStyleBackColor = true;
             // 
-            // checkBox7
+            // checkBox5
             // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Font = new System.Drawing.Font("Consolas", 12F);
-            this.checkBox7.Location = new System.Drawing.Point(43, 196);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(91, 23);
-            this.checkBox7.TabIndex = 0;
-            this.checkBox7.Text = "STRIP 7";
-            this.checkBox7.UseVisualStyleBackColor = true;
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox5.Location = new System.Drawing.Point(43, 138);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(91, 23);
+            this.checkBox5.TabIndex = 0;
+            this.checkBox5.Text = "STRIP 5";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox4.Location = new System.Drawing.Point(43, 109);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(91, 23);
+            this.checkBox4.TabIndex = 0;
+            this.checkBox4.Text = "STRIP 4";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox3.Location = new System.Drawing.Point(43, 80);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(91, 23);
+            this.checkBox3.TabIndex = 0;
+            this.checkBox3.Text = "STRIP 3";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox2.Location = new System.Drawing.Point(43, 51);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(91, 23);
+            this.checkBox2.TabIndex = 0;
+            this.checkBox2.Text = "STRIP 2";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Consolas", 12F);
+            this.checkBox1.Location = new System.Drawing.Point(43, 22);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(91, 23);
+            this.checkBox1.TabIndex = 0;
+            this.checkBox1.Text = "STRIP 1";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // buttonClearResults
+            // 
+            this.buttonClearResults.BackColor = System.Drawing.Color.OrangeRed;
+            this.buttonClearResults.Location = new System.Drawing.Point(843, 56);
+            this.buttonClearResults.Name = "buttonClearResults";
+            this.buttonClearResults.Size = new System.Drawing.Size(116, 23);
+            this.buttonClearResults.TabIndex = 58;
+            this.buttonClearResults.Text = "Clear Results";
+            this.buttonClearResults.UseVisualStyleBackColor = false;
+            this.buttonClearResults.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // Form1
             // 
@@ -1840,7 +1833,8 @@
             this.Controls.Add(this.buttonPaste);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.richTextBox1);
-            this.Controls.Add(this.buttonClear);
+            this.Controls.Add(this.buttonClearResults);
+            this.Controls.Add(this.buttonClearStrips);
             this.Controls.Add(this.buttonGetResults);
             this.Controls.Add(this.buttonCalculate);
             this.Controls.Add(this.buttonVerify);
@@ -1901,9 +1895,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBoxNoStrips);
             this.Controls.Add(this.textBoxBaseLine);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.button_OpenPort);
@@ -1929,8 +1921,6 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxBaseLine;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxNoStrips;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox textBox1;
@@ -1992,7 +1982,7 @@
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button buttonGetResults;
-        private System.Windows.Forms.Button buttonClear;
+        private System.Windows.Forms.Button buttonClearStrips;
         private System.Windows.Forms.Button buttonVerify;
         private System.Windows.Forms.Button buttonPaste;
         private System.Windows.Forms.Button buttonExit;
@@ -2076,5 +2066,6 @@
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button buttonClearResults;
     }
 }
