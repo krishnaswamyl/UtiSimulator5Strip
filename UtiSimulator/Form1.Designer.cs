@@ -218,11 +218,12 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.Font = new System.Drawing.Font("Segoe UI", 14F);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 677);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 683);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1016, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1016, 30);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -821,9 +822,10 @@
             // buttonSend
             // 
             this.buttonSend.BackColor = System.Drawing.Color.Pink;
-            this.buttonSend.Location = new System.Drawing.Point(269, 51);
+            this.buttonSend.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonSend.Location = new System.Drawing.Point(238, 51);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(75, 23);
+            this.buttonSend.Size = new System.Drawing.Size(106, 30);
             this.buttonSend.TabIndex = 57;
             this.buttonSend.Text = "Send Data";
             this.buttonSend.UseVisualStyleBackColor = false;
@@ -832,9 +834,10 @@
             // buttonCalculate
             // 
             this.buttonCalculate.BackColor = System.Drawing.Color.Orchid;
-            this.buttonCalculate.Location = new System.Drawing.Point(432, 50);
+            this.buttonCalculate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonCalculate.Location = new System.Drawing.Point(463, 51);
             this.buttonCalculate.Name = "buttonCalculate";
-            this.buttonCalculate.Size = new System.Drawing.Size(75, 23);
+            this.buttonCalculate.Size = new System.Drawing.Size(106, 30);
             this.buttonCalculate.TabIndex = 58;
             this.buttonCalculate.Text = "Calculate";
             this.buttonCalculate.UseVisualStyleBackColor = false;
@@ -862,9 +865,10 @@
             // buttonGetResults
             // 
             this.buttonGetResults.BackColor = System.Drawing.Color.SpringGreen;
-            this.buttonGetResults.Location = new System.Drawing.Point(516, 51);
+            this.buttonGetResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonGetResults.Location = new System.Drawing.Point(582, 51);
             this.buttonGetResults.Name = "buttonGetResults";
-            this.buttonGetResults.Size = new System.Drawing.Size(75, 23);
+            this.buttonGetResults.Size = new System.Drawing.Size(106, 30);
             this.buttonGetResults.TabIndex = 58;
             this.buttonGetResults.Text = "Get Results";
             this.buttonGetResults.UseVisualStyleBackColor = false;
@@ -872,10 +876,11 @@
             // 
             // buttonClearStrips
             // 
-            this.buttonClearStrips.BackColor = System.Drawing.Color.OrangeRed;
-            this.buttonClearStrips.Location = new System.Drawing.Point(597, 53);
+            this.buttonClearStrips.BackColor = System.Drawing.Color.Salmon;
+            this.buttonClearStrips.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonClearStrips.Location = new System.Drawing.Point(350, 87);
             this.buttonClearStrips.Name = "buttonClearStrips";
-            this.buttonClearStrips.Size = new System.Drawing.Size(91, 23);
+            this.buttonClearStrips.Size = new System.Drawing.Size(106, 30);
             this.buttonClearStrips.TabIndex = 58;
             this.buttonClearStrips.Text = "Clear Strips";
             this.buttonClearStrips.UseVisualStyleBackColor = false;
@@ -884,10 +889,11 @@
             // buttonVerify
             // 
             this.buttonVerify.BackColor = System.Drawing.Color.OliveDrab;
+            this.buttonVerify.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
             this.buttonVerify.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.buttonVerify.Location = new System.Drawing.Point(350, 51);
             this.buttonVerify.Name = "buttonVerify";
-            this.buttonVerify.Size = new System.Drawing.Size(75, 23);
+            this.buttonVerify.Size = new System.Drawing.Size(106, 30);
             this.buttonVerify.TabIndex = 57;
             this.buttonVerify.Text = "Verify Data";
             this.buttonVerify.UseVisualStyleBackColor = false;
@@ -896,9 +902,10 @@
             // buttonPaste
             // 
             this.buttonPaste.BackColor = System.Drawing.Color.PowderBlue;
-            this.buttonPaste.Location = new System.Drawing.Point(265, 633);
+            this.buttonPaste.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonPaste.Location = new System.Drawing.Point(176, 633);
             this.buttonPaste.Name = "buttonPaste";
-            this.buttonPaste.Size = new System.Drawing.Size(140, 36);
+            this.buttonPaste.Size = new System.Drawing.Size(229, 36);
             this.buttonPaste.TabIndex = 61;
             this.buttonPaste.Text = "Paste From Exel ClipBoard";
             this.buttonPaste.UseVisualStyleBackColor = false;
@@ -906,7 +913,7 @@
             // 
             // buttonExit
             // 
-            this.buttonExit.BackColor = System.Drawing.Color.Thistle;
+            this.buttonExit.BackColor = System.Drawing.Color.Tomato;
             this.buttonExit.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonExit.Location = new System.Drawing.Point(512, 633);
             this.buttonExit.Name = "buttonExit";
@@ -1741,21 +1748,22 @@
             // 
             // buttonClearResults
             // 
-            this.buttonClearResults.BackColor = System.Drawing.Color.OrangeRed;
-            this.buttonClearResults.Location = new System.Drawing.Point(843, 56);
+            this.buttonClearResults.BackColor = System.Drawing.Color.Pink;
+            this.buttonClearResults.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
+            this.buttonClearResults.Location = new System.Drawing.Point(809, 633);
             this.buttonClearResults.Name = "buttonClearResults";
-            this.buttonClearResults.Size = new System.Drawing.Size(116, 23);
+            this.buttonClearResults.Size = new System.Drawing.Size(150, 36);
             this.buttonClearResults.TabIndex = 58;
             this.buttonClearResults.Text = "Clear Results";
             this.buttonClearResults.UseVisualStyleBackColor = false;
-            this.buttonClearResults.Click += new System.EventHandler(this.buttonClear_Click);
+            this.buttonClearResults.Click += new System.EventHandler(this.buttonClearResults_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
-            this.ClientSize = new System.Drawing.Size(1016, 699);
+            this.ClientSize = new System.Drawing.Size(1016, 713);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.label20);
@@ -1838,7 +1846,6 @@
             this.Controls.Add(this.buttonGetResults);
             this.Controls.Add(this.buttonCalculate);
             this.Controls.Add(this.buttonVerify);
-            this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label8);
@@ -1901,6 +1908,7 @@
             this.Controls.Add(this.button_OpenPort);
             this.Controls.Add(this.comboBox_COMPORT);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.buttonSend);
             this.Name = "Form1";
             this.Text = "UTI SIMULATOR";
             this.Load += new System.EventHandler(this.OnLoadForm);
