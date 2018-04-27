@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
-
+using System.Media;
 
 namespace UtiSimulator
 {
@@ -625,6 +625,7 @@ namespace UtiSimulator
         private void buttonClearResults_Click(object sender, EventArgs e)
         {
             richTextBox1.Clear();
+            SystemSounds.Beep.Play();
         }
         private String stripsSelected()
         {
