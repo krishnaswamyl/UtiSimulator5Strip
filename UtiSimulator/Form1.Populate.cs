@@ -129,25 +129,46 @@ namespace UtiSimulator
             P6_630nm.Add(textBox95);
             P6_630nm.Add(textBox96);
 
-            P7_450nm = new List<TextBox>();
-            P7_450nm.Add(textBox97);
-            P7_450nm.Add(textBox98);
-            P7_450nm.Add(textBox99);
-            P7_450nm.Add(textBox100);
-            P7_450nm.Add(textBox101);
-            P7_450nm.Add(textBox102);
-            P7_450nm.Add(textBox103);
-            P7_450nm.Add(textBox104);
+            Pi_450nm = new List<TextBox>();
+            Pi_450nm.Add(textBoxpi1);
+            Pi_450nm.Add(textBoxpi2);
+            Pi_450nm.Add(textBoxpi3);
+            Pi_450nm.Add(textBoxpi4);
+            Pi_450nm.Add(textBoxpi5);
+            Pi_450nm.Add(textBoxpi6);
+            Pi_450nm.Add(textBoxpi7);
+            Pi_450nm.Add(textBoxpi8);
 
-            P7_630nm = new List<TextBox>();
-            P7_630nm.Add(textBox105);
-            P7_630nm.Add(textBox106);
-            P7_630nm.Add(textBox107);
-            P7_630nm.Add(textBox108);
-            P7_630nm.Add(textBox109);
-            P7_630nm.Add(textBox110);
-            P7_630nm.Add(textBox111);
-            P7_630nm.Add(textBox112);
+            Pi_630nm = new List<TextBox>();
+            Pi_630nm.Add(textBoxpi9);
+            Pi_630nm.Add(textBoxpi10);
+            Pi_630nm.Add(textBoxpi11);
+            Pi_630nm.Add(textBoxpi12);
+            Pi_630nm.Add(textBoxpi13);
+            Pi_630nm.Add(textBoxpi14);
+            Pi_630nm.Add(textBoxpi15);
+            Pi_630nm.Add(textBoxpi16);
+
+            PiN_450nm = new List<TextBox>();
+            PiN_450nm.Add(textBoxpin1);
+            PiN_450nm.Add(textBoxpin2);
+            PiN_450nm.Add(textBoxpin3);
+            PiN_450nm.Add(textBoxpin4);
+            PiN_450nm.Add(textBoxpin5);
+            PiN_450nm.Add(textBoxpin6);
+            PiN_450nm.Add(textBoxpin7);
+            PiN_450nm.Add(textBoxpin8);
+
+            PiN_630nm = new List<TextBox>();
+            PiN_630nm.Add(textBoxpin9);
+            PiN_630nm.Add(textBoxpin10);
+            PiN_630nm.Add(textBoxpin11);
+            PiN_630nm.Add(textBoxpin12);
+            PiN_630nm.Add(textBoxpin13);
+            PiN_630nm.Add(textBoxpin14);
+            PiN_630nm.Add(textBoxpin15);
+            PiN_630nm.Add(textBoxpin16);
+
 
             checkBoxes = new List<CheckBox>();
             checkBoxes.Add(checkBox1);
@@ -156,7 +177,6 @@ namespace UtiSimulator
             checkBoxes.Add(checkBox4);
             checkBoxes.Add(checkBox5);
             checkBoxes.Add(checkBox6);
-            checkBoxes.Add(checkBox7);
 
         }
     }

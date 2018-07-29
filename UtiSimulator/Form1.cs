@@ -16,6 +16,8 @@ namespace UtiSimulator
         delegate void SetStatusBarTextCallback(string text);
         private static EventWaitHandle adcSyc = new EventWaitHandle(true, EventResetMode.AutoReset);
         public string comportname = "COM1";
+        public string stripSelected = "11 0,0,0,0,0,0,0,0";
+        public Byte strip = 0;
 
         private List<TextBox> P1_450nm;
         private List<TextBox> P1_630nm;
@@ -33,8 +35,13 @@ namespace UtiSimulator
         private List<TextBox> P6_450nm;
         private List<TextBox> P6_630nm;
 
-        private List<TextBox> P7_450nm;
-        private List<TextBox> P7_630nm;
+        private List<TextBox> Pi_450nm;
+        private List<TextBox> Pi_630nm;
+
+        private List<TextBox> PiN_450nm;
+        private List<TextBox> PiN_630nm;
+
+
 
         private List<CheckBox> checkBoxes;
 
@@ -74,7 +81,7 @@ namespace UtiSimulator
             }
             comboBox_COMPORT.SelectedIndex = 0;
             comboBox_COMPORT.EndUpdate();
-            
+            comboBoxMode.SelectedIndex = 0;
 
 
         }
@@ -161,37 +168,66 @@ namespace UtiSimulator
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
+            if(serp.IsOpen == false)
+            {
+                MessageBox.Show("Please Open Com Port And Try Again ....");
+                return;
+            }
             string temp;
             int lp = 0, olp = 0;
             no_of_strips = getNo_Of_Strips_Selected();
-            if (no_of_strips > 7 || no_of_strips < 1)
+            if (no_of_strips > 6 || no_of_strips < 1)
             {
                 MessageBox.Show("Please select valid Strips to be sent:");
                 return;
             }
-            List< TextBox > mylist= new List<TextBox>();
-
-            temp = "01 " + textBoxBaseLine.Text.ToString();
-            temp = WriteAndReadCom(temp);
-            if(temp.Equals("NACK"))
+            // Send the Mode Ex: 0 for mono and 1 for bichrmo
+            int index = comboBoxMode.SelectedIndex;
+            switch (index)
             {
+                case 0:
+                    temp = WriteAndReadCom("03 00");
+                    break;
+                case 1:
+                    temp = WriteAndReadCom("03 01");
+                    break;
+                case -1:
+                    MessageBox.Show("Please select a valid Mode");
+                    return;
+
+            }
+            //Send strip selected
+            Byte striptemp = 0;
+            temp = WriteAndReadCom(stripSelected);
+            try
+            {
+                striptemp = Convert.ToByte(temp, 16);
+            }
+            catch(ArgumentException)
+            {
+                MessageBox.Show("Error while receiving back No of Strips Selected");
+                return;
+            }
+            if(striptemp != strip)
+            {
+                MessageBox.Show("Error while receiving back No of Strips Selected");
                 return;
             }
 
-            
+            List< TextBox > mylist= new List<TextBox>();            
             Boolean cflag = false;
-            for (olp = 0; olp < 14; olp++)
+            for (olp = 0; olp < 12; olp++)
             {
                 cflag = false;
                 switch (olp)
                 {
                     case 0:
                         if (checkBoxes[0].Checked) { cflag = true; }
-                            mylist = P1_450nm;                        
+                        mylist = P1_450nm;
                         break;
                     case 1:
                         if (checkBoxes[0].Checked) { cflag = true; }
-                        mylist = P1_630nm;                        
+                        mylist = P1_630nm;
                         break;
                     case 2:
                         if (checkBoxes[1].Checked) { cflag = true; }
@@ -233,22 +269,14 @@ namespace UtiSimulator
                         if (checkBoxes[5].Checked) { cflag = true; }
                         mylist = P6_630nm;
                         break;
-                    case 12:
-                        if (checkBoxes[6].Checked) { cflag = true; }
-                        mylist = P7_450nm;
-                        break;
-                    case 13:
-                        if (checkBoxes[6].Checked) { cflag = true; }
-                        mylist = P7_630nm;
-                        break;
 
                 };
                 if (cflag == false) continue;
-                temp = "03 " + (olp + 1);
+                temp = "09 " + (olp + 1);
                 temp = WriteAndReadCom(temp);
                 for (lp = 0; lp < 8; lp++)
                 {
-                    
+
                     temp = mylist[lp].Text.ToString();
                     temp = WriteAndReadCom(temp);
                     if (temp.Equals("NACK"))
@@ -256,163 +284,53 @@ namespace UtiSimulator
                         return;
                     }
                 }
-                SetText("No of Strips Transmitted to UTI card is: " + (olp + 1)+" Nos");
-
             }
+
+                // Send Pi450nm and Pi630nm
+                for (olp = 0; olp < 2; olp++)
+                {
+                    cflag = false;
+                    switch (olp)
+                    {
+                        case 0:
+                            mylist = Pi_450nm;
+                            break;
+                        case 1:
+                            if (index == 0) { cflag = true; }
+                            mylist = Pi_630nm;
+                            break;
+                    }
+                    if (cflag == true) continue;
+                    temp = "05 " + (olp + 1);           // case 5: to send Pi data. 1 to 4
+                    temp = WriteAndReadCom(temp);
+                    for (lp = 0; lp < 8; lp++)
+                    {
+
+                        temp = mylist[lp].Text.ToString();
+                        temp = WriteAndReadCom(temp);
+                        if (temp.Equals("NACK"))
+                        {
+                            return;
+                        }
+                    }
+                }
+                using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+                {
+                    soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+                }
+                SetText("Data of Pi and Selected Panels sent to UTI card: "+stripSelected);
 
             return;
         }
 
         private void buttonVerify_Click(object sender, EventArgs e)
         {
-            no_of_strips = getNo_Of_Strips_Selected();
-            if (no_of_strips > 7 || no_of_strips < 1)
-            {
-                MessageBox.Show("Please select valid Strips to be sent:");
-                return;
-            }
-            string temp, command;
-            double xt = 0.1, dt = 5.0;
-            Boolean cflag = false;
-            List<TextBox> mylistvf = new List<TextBox>();
-
-            temp = WriteAndReadCom("06");
-            if (temp.Equals("NACK"))
-            {
-                return;
-            }
-            try
-            {
-                xt = double.Parse(temp);
-                dt = double.Parse(textBoxBaseLine.Text.ToString());
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            if (xt == dt)
-            {
-                textBoxBaseLine.BackColor = Color.LightGreen;
-            }
-            else
-            {
-                textBoxBaseLine.BackColor = Color.Orange;
-            }
-
-            for (int olp = 0; olp < 14; olp++)
-            {
-                cflag = false;
-                switch (olp)
-                {
-                    case 0:
-                        if (checkBoxes[0].Checked) { cflag = true; }
-                        mylistvf = P1_450nm;
-                        break;
-                    case 1:
-                        if (checkBoxes[0].Checked) { cflag = true; }
-                        mylistvf = P1_630nm;
-                        break;
-                    case 2:
-                        if (checkBoxes[1].Checked) { cflag = true; }
-                        mylistvf = P2_450nm;
-                        break;
-                    case 3:
-                        if (checkBoxes[1].Checked) { cflag = true; }
-                        mylistvf = P2_630nm;
-                        break;
-                    case 4:
-                        if (checkBoxes[2].Checked) { cflag = true; }
-                        mylistvf = P3_450nm;
-                        break;
-                    case 5:
-                        if (checkBoxes[2].Checked) { cflag = true; }
-                        mylistvf = P3_630nm;
-                        break;
-                    case 6:
-                        if (checkBoxes[3].Checked) { cflag = true; }
-                        mylistvf = P4_450nm;
-                        break;
-                    case 7:
-                        if (checkBoxes[3].Checked) { cflag = true; }
-                        mylistvf = P4_630nm;
-                        break;
-                    case 8:
-                        if (checkBoxes[4].Checked) { cflag = true; }
-                        mylistvf = P5_450nm;
-                        break;
-                    case 9:
-                        if (checkBoxes[4].Checked) { cflag = true; }
-                        mylistvf = P5_630nm;
-                        break;
-                    case 10:
-                        if (checkBoxes[5].Checked) { cflag = true; }
-                        mylistvf = P6_450nm;
-                        break;
-                    case 11:
-                        if (checkBoxes[5].Checked) { cflag = true; }
-                        mylistvf = P6_630nm;
-                        break;
-                    case 12:
-                        if (checkBoxes[6].Checked) { cflag = true; }
-                        mylistvf = P7_450nm;
-                        break;
-                    case 13:
-                        if (checkBoxes[6].Checked) { cflag = true; }
-                        mylistvf = P7_630nm;
-                        break;
-
-                };
-                if (cflag == false) continue;
-                for (int lp = 0; lp < 8; lp++)
-                {
-                    command = String.Format("{0:2} {1:D2} {2:D2}", "08", (olp + 1), lp);
-                    temp = WriteAndReadCom(command);
-                    if (temp.Equals("NACK"))
-                    {
-                        return;
-                    }
-                    try
-                    {
-                        xt = double.Parse(temp);
-                        dt = double.Parse(mylistvf[lp].Text.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-
-                    if (xt == dt)
-                    {
-                        mylistvf[lp].BackColor = Color.LightGreen;
-                    }
-                    else
-                    {
-                        mylistvf[lp].BackColor = Color.LightPink;
-                    }
-
-                }
-
-
-            }//loop ends here
-            SetText("Data Verification Done....");
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //Send Calculate command.
-            string temp;
-            temp = WriteAndReadCom("04 ");
-            if(temp.Equals("Ack"))
-                {
-                SetText("Calcuations Done");
-
-            }
-            if (temp.Equals("NACK"))
-            {
-                SetText("Error System did not respond");
-                return;
-            }
+           
         }
 
         private void buttonGetResults_Click(object sender, EventArgs e)
@@ -451,7 +369,8 @@ namespace UtiSimulator
         private void buttonClear_Click(object sender, EventArgs e)
         {
             List<TextBox> mylistvf = new List<TextBox>();
-            for (int olp = 0; olp < 14; olp++)
+            int olp;
+            for (olp = 0; olp < 12; olp++)
             {
 
                 switch (olp)
@@ -492,13 +411,7 @@ namespace UtiSimulator
                     case 11:
                         mylistvf = P6_630nm;
                         break;
-                    case 12:
-                        mylistvf = P7_450nm;
-                        break;
-                    case 13:
-                        mylistvf = P7_630nm;
-                        break;
-
+                    
                 };
                 for (int lp = 0; lp < 8; lp++)
                 {
@@ -508,7 +421,34 @@ namespace UtiSimulator
 
 
             }//loop ends here
-            foreach(CheckBox chb in checkBoxes)
+
+            for (olp = 0; olp < 4; olp++)
+            {
+                
+                switch (olp)
+                {
+                    case 0:
+                        mylistvf = Pi_450nm;
+                        break;
+                    case 1:
+                        mylistvf = Pi_630nm;
+                        break;
+                    case 2:
+                        mylistvf = PiN_450nm;
+                        break;
+                    case 3:
+                        mylistvf = PiN_630nm;
+                        break;
+                }
+                for (int lp = 0; lp < 8; lp++)
+                {
+                    mylistvf[lp].BackColor = Color.White;
+                    mylistvf[lp].Text = "0.000";
+                }
+            }
+
+
+            foreach (CheckBox chb in checkBoxes)
             {
                 chb.Checked = false;
             }
@@ -520,14 +460,27 @@ namespace UtiSimulator
         
         private int getNo_Of_Strips_Selected()
         {
+           
             int count = 0;
-            foreach(CheckBox ch in checkBoxes)
+            stripSelected = "11 ";
+            foreach (CheckBox ch in checkBoxes)
             {
                 if(ch.Checked)
                 {
+                    stripSelected += "1,";
+                    strip <<= 1;
+                    strip |= 1;
                     count++;
+                }else
+                {
+                    strip <<= 1;
+                    stripSelected += "0,";
                 }
             }
+            stripSelected += "0,";
+            stripSelected += "0,";
+            strip <<= 1;
+            strip <<= 1;
 
             return count;  
         }
@@ -595,11 +548,7 @@ namespace UtiSimulator
                         list630 = P6_630nm;
                         checkBoxes[5].Checked = true;
                         break;
-                    case "P-7 absorbance":
-                        list450 = P7_450nm;
-                        list630 = P7_630nm;
-                        checkBoxes[6].Checked = true;
-                        break;
+                   
                 }
                 for (k=0; k < 8; k++)
                 {
@@ -645,6 +594,469 @@ namespace UtiSimulator
 
             
             return com;
+        }
+
+        private void buttonSendPi_Click(object sender, EventArgs e)
+        {
+            if (serp.IsOpen == false)
+            {
+                MessageBox.Show("Please connect to comm");
+                return;
+            }
+            string temp;
+            int mins = 120;
+            int olp=0, lp = 0;
+            // send the no of mins elapsed since the first Pi was read.
+            try
+            {
+                mins = int.Parse(No_of_Mins.Text.ToString());
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show("No of Mins Not a Valid Integer..");
+                return;
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("No of Mins Not a Valid Integer..");
+                return;
+            }
+            temp = "01 " + mins.ToString("000");
+            temp = WriteAndReadCom(temp);
+            // Send the Mode Ex: 0 for mono and 1 for bichrmo
+            int index = comboBoxMode.SelectedIndex;
+            switch(index)
+            {
+                case 0:
+                    temp = WriteAndReadCom("03 00");
+                    break;
+                case 1:
+                    temp = WriteAndReadCom("03 01");
+                    break;
+                case -1:
+                    MessageBox.Show("Please select a valid Mode");
+                    return;            
+
+            }
+            // Send Pi450nm Send Pi630nm Send PiN450nm Send PiN630nm
+            List<TextBox> mylist = new List<TextBox>();
+
+            Boolean cflag = false;
+            for (olp = 0; olp < 4; olp++)
+            {
+                cflag = false;
+                switch (olp)
+                {
+                    case 0:
+                        mylist = Pi_450nm;
+                        break;
+                    case 1:
+                        if (index == 0) { cflag = true; }
+                        mylist = Pi_630nm;
+                        break;
+                    case 2:
+                        mylist = PiN_450nm;
+                        break;
+                    case 3:
+                        if (index == 0) { cflag = true; }
+                        mylist = PiN_630nm;
+                        break;
+                }
+                if (cflag == true) continue;
+                temp = "05 " + (olp + 1);           // case 5: to send Pi data. 1 to 4
+                temp = WriteAndReadCom(temp);
+                for (lp = 0; lp < 8; lp++)
+                {
+
+                    temp = mylist[lp].Text.ToString();
+                    temp = WriteAndReadCom(temp);
+                    if (temp.Equals("NACK"))
+                    {
+                        return;
+                    }
+                }
+            }
+            SetText("Panel Identification Pi Data Sent to UTI Card..");
+            using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+            {
+                soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+            }
+            return;
+        }
+
+        private void buttonValidateASTdata_Click(object sender, EventArgs e)
+        {
+            no_of_strips = getNo_Of_Strips_Selected();
+            if (no_of_strips > 6 || no_of_strips < 1)
+            {
+                MessageBox.Show("Please select valid Strips to be Received:");
+                return;
+            }
+            string temp, command;
+            double xt = 0.1, dt = 5.0;
+            // Read Mode
+            temp = WriteAndReadCom("04 ");
+            int mode = int.Parse(temp);
+            int Mode = comboBoxMode.SelectedIndex;
+            if (mode != Mode)
+            {
+                comboBoxMode.BackColor = Color.LightPink;
+            }
+            else
+            {
+                comboBoxMode.BackColor = Color.LightGreen;
+            }
+
+            Boolean cflag = false;
+            List<TextBox> mylistvf = new List<TextBox>();
+            
+            for (int olp = 0; olp < 12; olp++)
+            {
+                cflag = false;
+                switch (olp)
+                {
+                    case 0:
+                        if (checkBoxes[0].Checked) { cflag = true; }
+                        mylistvf = P1_450nm;
+                        break;
+                    case 1:                       
+                        if (checkBoxes[0].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P1_630nm;
+                        break;
+                    case 2:
+                        if (checkBoxes[1].Checked) { cflag = true; }
+                        mylistvf = P2_450nm;
+                        break;
+                    case 3:
+                        if (checkBoxes[1].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P2_630nm;
+                        break;
+                    case 4:
+                        if (checkBoxes[2].Checked) { cflag = true; }
+                        mylistvf = P3_450nm;
+                        break;
+                    case 5:
+                        if (checkBoxes[2].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P3_630nm;
+                        break;
+                    case 6:
+                        if (checkBoxes[3].Checked) { cflag = true; }
+                        mylistvf = P4_450nm;
+                        break;
+                    case 7:
+                        if (checkBoxes[3].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P4_630nm;
+                        break;
+                    case 8:
+                        if (checkBoxes[4].Checked) { cflag = true; }
+                        mylistvf = P5_450nm;
+                        break;
+                    case 9:
+                        if (checkBoxes[4].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P5_630nm;
+                        break;
+                    case 10:
+                        if (checkBoxes[5].Checked) { cflag = true; }
+                        mylistvf = P6_450nm;
+                        break;
+                    case 11:
+                        if (checkBoxes[5].Checked && Mode == 1) { cflag = true; }
+                        mylistvf = P6_630nm;
+                        break;
+
+
+                };
+                if (cflag == false) continue;
+                for (int lp = 0; lp < 8; lp++)
+                {
+                    command = String.Format("{0:2} {1:D2} {2:D2}", "10", (olp + 1), lp);
+                    temp = WriteAndReadCom(command);
+                    if (temp.Equals("NACK"))
+                    {
+                        return;
+                    }
+                    try
+                    {
+                        xt = double.Parse(temp);
+                        dt = double.Parse(mylistvf[lp].Text.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+
+                    if (xt == dt)
+                    {
+                        mylistvf[lp].BackColor = Color.LightGreen;
+                    }
+                    else
+                    {
+                        mylistvf[lp].BackColor = Color.LightPink;
+                    }
+
+                }
+
+
+            }//loop ends here
+            //Read back Pi data and verify
+            for (int olp = 0; olp < 2; olp++)
+            {
+                cflag = false;
+                switch (olp)
+                {
+                    case 0:
+                        mylistvf = Pi_450nm;
+                        break;
+                    case 1:
+                        if (Mode == 0) { cflag = true; }
+                        mylistvf = Pi_630nm;
+                        break;
+
+                }
+                if (cflag == true) continue;
+                for (int lp = 0; lp < 8; lp++)
+                {
+                    command = String.Format("{0:2} {1:D2} {2:D2}", "06", (olp + 1), lp);
+                    temp = WriteAndReadCom(command);
+                    if (temp.Equals("NACK"))
+                    {
+                        return;
+                    }
+                    try
+                    {
+                        xt = double.Parse(temp);
+                        dt = double.Parse(mylistvf[lp].Text.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+
+                    if (xt == dt)
+                    {
+                        mylistvf[lp].BackColor = Color.LightGreen;
+                    }
+                    else
+                    {
+                        mylistvf[lp].BackColor = Color.LightPink;
+                    }
+
+                }
+            }
+            using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+            {
+                soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+            }
+            SetText("Data Verification Done....");
+        }
+
+
+
+
+        private void buttonGetASTresult_Click(object sender, EventArgs e)
+        {
+            //Send Calculate command.
+            string temp, command;
+            temp = WriteAndReadCom("12 ");
+            if (temp.Equals("Ack"))
+            {
+                SetText("Calcuations Done");
+
+            }
+            if (temp.Equals("NACK"))
+            {
+                SetText("Error System did not respond");
+                return;
+            }
+            richTextBox1.Clear();
+            temp = WriteAndReadCom("13 00");            // Organism Name
+            richTextBox1.AppendText(temp+"\n");
+            temp = WriteAndReadCom("13 01");            // Cell Volume
+            richTextBox1.AppendText(temp + "\n");
+            int sr = 1;
+            Boolean cflag = false;
+            for(int k=1; k < 7; k++)
+            {
+                cflag = false;
+                switch(k)
+                {
+                    case 1:
+                        if(checkBox1.Checked) { cflag = true; }
+                        break;
+                    case 2:
+                        if (checkBox2.Checked) { cflag = true; }
+                        break;
+                    case 3:
+                        if (checkBox3.Checked) { cflag = true; }
+                        break;
+                    case 4:
+                        if (checkBox4.Checked) { cflag = true; }
+                        break;                    
+                    case 5:
+                        if (checkBox5.Checked) { cflag = true; }
+                        break;
+                    case 6:
+                        if (checkBox6.Checked) { cflag = true; }
+                        break;
+                }
+                if (cflag == false) continue;
+                richTextBox1.AppendText("Panel "+k +": Results\n");
+                for(int p=0; p < 7; p++)
+                {
+                    command = String.Format("{0:2} {1:D2} {2:D2}", "14",k, p);
+                    temp = WriteAndReadCom(command);
+                    richTextBox1.AppendText(sr++.ToString("00")+":"+temp + "\n");
+                }
+                richTextBox1.AppendText("\n");
+            }
+
+            using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+            {
+                soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+            }
+
+        }
+        /// <summary>
+        /// Validate Pi Data read from UTI card.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void buttonReceivePiData_Click(object sender, EventArgs e)
+        {
+            if (serp.IsOpen == false)
+            {
+                MessageBox.Show("Please connect to comm");
+                return;
+            }
+            string temp, command;
+            double xt = 0.1, dt = 5.0;
+            Boolean cflag = false;
+            int mins = 0, NoOfMins = 0;
+            List<TextBox> mylistvf = new List<TextBox>();
+            int index = comboBoxMode.SelectedIndex;
+            temp = WriteAndReadCom("02 ");
+            try
+            {
+                mins = int.Parse(temp);
+                NoOfMins = int.Parse(No_of_Mins.Text.ToString());
+            }
+            catch(FormatException)
+            {
+                MessageBox.Show("No Of Mins read back from UTI card not valid\n Or No of Mins enterned is wrong");
+                return;
+            }
+            catch (ArgumentNullException)
+            {
+                MessageBox.Show("No Of Mins read back from UTI card not valid\n Or No of Mins enterned is wrong");
+                return;
+            }
+            if(mins != NoOfMins)
+            {
+                No_of_Mins.BackColor = Color.LightPink;
+            }else
+            {
+                No_of_Mins.BackColor = Color.LightGreen;
+            }
+            // Read Mode
+            temp = WriteAndReadCom("04 ");
+            int mode=int.Parse(temp);
+            int Mode = comboBoxMode.SelectedIndex;
+            if(mode != Mode)
+            {
+                comboBoxMode.BackColor = Color.LightPink;
+            }
+            else
+            {
+                comboBoxMode.BackColor = Color.LightGreen;
+            }
+            //Read back Pi data and verify
+            for (int olp = 0; olp < 4; olp++)
+            {
+                cflag = false;
+                switch (olp)
+                {
+                    case 0:
+                        mylistvf = Pi_450nm;
+                        break;
+                    case 1:
+                        if (index == 0) { cflag = true; }
+                        mylistvf = Pi_630nm;
+                        break;
+                    case 2:
+                        mylistvf = PiN_450nm;
+                        break;
+                    case 3:
+                        if (index == 0) { cflag = true; }
+                        mylistvf = PiN_630nm;
+                        break;
+
+
+                };
+                if (cflag == true) continue;
+                for (int lp = 0; lp < 8; lp++)
+                {
+                    command = String.Format("{0:2} {1:D2} {2:D2}", "06", (olp + 1), lp);
+                    temp = WriteAndReadCom(command);
+                    if (temp.Equals("NACK"))
+                    {
+                        return;
+                    }
+                    try
+                    {
+                        xt = double.Parse(temp);
+                        dt = double.Parse(mylistvf[lp].Text.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+
+                    if (xt == dt)
+                    {
+                        mylistvf[lp].BackColor = Color.LightGreen;
+                    }
+                    else
+                    {
+                        mylistvf[lp].BackColor = Color.LightPink;
+                    }
+
+                }
+
+
+            }//loop ends here
+            SetText("Data Verification Done....");
+            using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+            {
+                soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+            }
+        }
+
+        private void buttonValidatePi_Click(object sender, EventArgs e)
+        {
+            if (serp.IsOpen == false)
+            {
+                MessageBox.Show("Please connect to comm");
+                return;
+            }
+            if (serp.IsOpen == false)
+            {
+                MessageBox.Show("Please connect to comm");                
+                return;
+            }
+            String temp = WriteAndReadCom("07 ");
+            if (temp != "Ack")
+            {
+                MessageBox.Show("UTI card did not Respond......");
+            }
+            // Read the Pi result from UTI card.
+
+            textBoxPiResult.Text = WriteAndReadCom("08 ");
+            SetText("Panel Identification \"Pi\" Result Fetched ....");
+            using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
+            {
+                soundPlayer.Play(); // can also use soundPlayer.PlaySync()
+            }
+            return;
         }
     }
 
