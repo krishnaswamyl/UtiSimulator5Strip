@@ -340,7 +340,6 @@ namespace UtiSimulator
         private void buttonGetResults_Click(object sender, EventArgs e)
         {
             string temp;
-            richTextBox1.Clear();
             int no_of_results = 16;
             temp = WriteAndReadCom("11");
             if (temp.Equals("NACK"))
@@ -364,9 +363,6 @@ namespace UtiSimulator
                     SetText("Error System did not respond");
                     return;
                 }
-                richTextBox1.AppendText(temp);
-                richTextBox1.AppendText("\r\n");
-
             }
         }
 
@@ -587,7 +583,7 @@ namespace UtiSimulator
 
         private void buttonClearResults_Click(object sender, EventArgs e)
         {
-            richTextBox1.Clear();
+            dataGridView1.Rows.Clear();
             SystemSounds.Beep.Play();
         }
         private String stripsSelected()
@@ -882,14 +878,20 @@ namespace UtiSimulator
                 SetText("Error System did not respond");
                 return;
             }
-            richTextBox1.Clear();
+            dataGridView1.Rows.Clear();
+            char[] splitchar = { ',' };
+            string[] results = { "01", " ", " " };
             temp = WriteAndReadCom("13 00");            // Organism Name
-            richTextBox1.AppendText(temp+"\n");
+            results[1] = "Organism Name"; results[2] = temp;
+            dataGridView1.Rows.Add(results);
             temp = WriteAndReadCom("13 01");            // Cell Volume
-            richTextBox1.AppendText(temp + "\n");
+            results[0] = "02"; results[1] = "Volume"; results[2] = temp;
+            dataGridView1.Rows.Add(results);
             int sr = 1;
             Boolean cflag = false;
-            for(int k=1; k < 7; k++)
+            
+
+            for (int k=1; k < 7; k++)
             {
                 cflag = false;
                 switch(k)
@@ -914,14 +916,19 @@ namespace UtiSimulator
                         break;
                 }
                 if (cflag == false) continue;
-                richTextBox1.AppendText("Panel "+k +": Results\n");
-                for(int p=0; p < 7; p++)
+                dataGridView1.Rows.Add(" ", " ", " ");
+                dataGridView1.Rows.Add(" ", "Panel-Results: "+ k.ToString()," ");
+                for (int p=0; p < 7; p++)
                 {
                     command = String.Format("{0:2} {1:D2} {2:D2}", "14",k, p);
                     temp = WriteAndReadCom(command);
-                    richTextBox1.AppendText(sr++.ToString("00")+":"+temp + "\n");
+                    string[] results2 = temp.Split(splitchar);
+                    results[0] = sr++.ToString("00");
+                    results[1] = results2[0].Trim();
+                    results[2] = results2[1];
+                    dataGridView1.Rows.Add(results);
                 }
-                richTextBox1.AppendText("\n");
+               
             }
 
             using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))

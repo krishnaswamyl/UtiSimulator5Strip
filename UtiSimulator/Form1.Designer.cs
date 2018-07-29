@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox_COMPORT = new System.Windows.Forms.ComboBox();
             this.button_OpenPort = new System.Windows.Forms.Button();
@@ -88,7 +89,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.buttonSend = new System.Windows.Forms.Button();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.buttonPaste = new System.Windows.Forms.Button();
             this.buttonExit = new System.Windows.Forms.Button();
@@ -203,8 +203,13 @@
             this.textBoxPiResult = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.buttonClearStrips = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.sno = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.antibiotic = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.result = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -245,7 +250,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 619);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1304, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1372, 30);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -819,15 +824,6 @@
             this.buttonSend.Text = "Send AST Data";
             this.buttonSend.UseVisualStyleBackColor = false;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(1036, 149);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(256, 467);
-            this.richTextBox1.TabIndex = 59;
-            this.richTextBox1.Text = "";
             // 
             // label12
             // 
@@ -2020,12 +2016,57 @@
             this.buttonClearStrips.UseVisualStyleBackColor = false;
             this.buttonClearStrips.Click += new System.EventHandler(this.buttonClear_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.sno,
+            this.antibiotic,
+            this.result});
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.Location = new System.Drawing.Point(1021, 149);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(304, 458);
+            this.dataGridView1.TabIndex = 210;
+            // 
+            // sno
+            // 
+            this.sno.HeaderText = "S.NO";
+            this.sno.MaxInputLength = 5;
+            this.sno.Name = "sno";
+            this.sno.ReadOnly = true;
+            this.sno.Width = 45;
+            // 
+            // antibiotic
+            // 
+            this.antibiotic.HeaderText = "ANTIBIOTIC";
+            this.antibiotic.Name = "antibiotic";
+            this.antibiotic.ReadOnly = true;
+            this.antibiotic.Width = 120;
+            // 
+            // result
+            // 
+            this.result.FillWeight = 99F;
+            this.result.HeaderText = "RESULT";
+            this.result.Name = "result";
+            this.result.ReadOnly = true;
+            this.result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.result.Width = 90;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
-            this.ClientSize = new System.Drawing.Size(1304, 649);
+            this.ClientSize = new System.Drawing.Size(1372, 649);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.textBoxPiResult);
             this.Controls.Add(this.buttonReceivePiData);
             this.Controls.Add(this.buttonValidatePi);
@@ -2094,7 +2135,6 @@
             this.Controls.Add(this.buttonExit);
             this.Controls.Add(this.buttonPaste);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.buttonClearResults);
             this.Controls.Add(this.buttonClearStrips);
             this.Controls.Add(this.label10);
@@ -2201,6 +2241,7 @@
             this.statusStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2267,7 +2308,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button buttonSend;
-        private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Button buttonPaste;
         private System.Windows.Forms.Button buttonExit;
@@ -2382,5 +2422,9 @@
         private System.Windows.Forms.TextBox textBoxPiResult;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button buttonClearStrips;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn sno;
+        private System.Windows.Forms.DataGridViewTextBoxColumn antibiotic;
+        private System.Windows.Forms.DataGridViewTextBoxColumn result;
     }
 }
