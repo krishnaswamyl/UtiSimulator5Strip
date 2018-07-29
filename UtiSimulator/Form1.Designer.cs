@@ -203,7 +203,6 @@
             this.textBoxPiResult = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.buttonClearStrips = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -2021,18 +2020,6 @@
             this.buttonClearStrips.UseVisualStyleBackColor = false;
             this.buttonClearStrips.Click += new System.EventHandler(this.buttonClear_Click);
             // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.Color.Salmon;
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
-            this.button1.Location = new System.Drawing.Point(12, 369);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(306, 36);
-            this.button1.TabIndex = 61;
-            this.button1.Text = "Paste Pi Data From Exel ClipBoard";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.buttonPaste_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2105,7 +2092,6 @@
             this.Controls.Add(this.textBox63);
             this.Controls.Add(this.textBox64);
             this.Controls.Add(this.buttonExit);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonPaste);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.richTextBox1);
@@ -2396,6 +2382,5 @@
         private System.Windows.Forms.TextBox textBoxPiResult;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button buttonClearStrips;
-        private System.Windows.Forms.Button button1;
     }
 }

@@ -113,7 +113,7 @@ namespace UtiSimulator
                 read_timeout_flag = true;
                 return ("Time Out");
             }
-            SetText(temp);
+            
             mut.ReleaseMutex();
             return (temp);
         }
@@ -122,7 +122,7 @@ namespace UtiSimulator
         {
             if (button_OpenPort.Text.Equals("Open Port"))
             {
-                string Comportname;
+                string Comportname, temp;
                 Comportname = comboBox_COMPORT.SelectedItem.ToString();
                 serp.PortName = Comportname;
                 serp.BaudRate = 115200;
@@ -140,18 +140,22 @@ namespace UtiSimulator
                 serp.ReadTimeout = 1000;
                 Thread.Sleep(100);
                 
-                WriteAndReadCom("10 ");
+                temp = WriteAndReadCom("20 ");  // Send Default Command
                 if (read_timeout_flag == false)
                 {
+                    //Communication Successful with UTI card.
                     button_OpenPort.Text = "Close Port";
                     button_OpenPort.BackColor = Color.HotPink;
-
+                    if(temp.Equals("Default"))
+                    {
+                        SetText("Communication With UTI Card Successful");
+                    }
                 }
                 else
                 {
                     serp.Dispose();
                     serp.Close();
-                    SetText("No Communication");
+                    SetText("Communication To UTI Card Failed:");
                 }
 
             }
@@ -162,7 +166,7 @@ namespace UtiSimulator
                 serp.Close();
                 button_OpenPort.Text = "Open Port";
                 button_OpenPort.BackColor = Color.YellowGreen;
-                
+                SetText("Com Port Closed:.......");
             }
         }
 
@@ -518,6 +522,16 @@ namespace UtiSimulator
                 sCells = lines[(i * 10)].Split('\t');
                 switch(sCells[0])
                 {
+                    case "P-i absorbance":
+                        list450 = Pi_450nm;
+                        list630 = Pi_630nm;
+                        checkBoxes[0].Checked = true;
+                        break;
+                    case "P-iN absorbance":
+                        list450 = PiN_450nm;
+                        list630 = PiN_630nm;
+                        checkBoxes[0].Checked = true;
+                        break;
                     case "P-1 absorbance":
                         list450 = P1_450nm;
                         list630 = P1_630nm;
@@ -563,7 +577,7 @@ namespace UtiSimulator
                 }
                 
             }
-            SetText("Data Imported .....  " + stripsSelected());
+            SetText("Data Imported From Excel Sheet .....  " + stripsSelected());
         }
 
         private void buttonExit_Click(object sender, EventArgs e)
@@ -578,7 +592,7 @@ namespace UtiSimulator
         }
         private String stripsSelected()
         {
-            String com = "12 ";          
+            String com = "11 ";          
             foreach (CheckBox ch in checkBoxes)
             {
                 if(ch.Checked)
