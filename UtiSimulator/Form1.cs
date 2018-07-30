@@ -1079,6 +1079,22 @@ namespace UtiSimulator
             }
             return;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            double y = 0.0;
+            string res = WriteAndReadCom("16 ");
+            try
+            {
+                y = float.Parse(res);
+            }catch(FormatException)
+            {
+                MessageBox.Show(" NAN");
+                return;
+            }
+
+            MessageBox.Show(y.ToString(format: "0.0000"));
+        }
     }
 
 
