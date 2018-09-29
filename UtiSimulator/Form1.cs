@@ -17,7 +17,7 @@ namespace UtiSimulator
         private static EventWaitHandle adcSyc = new EventWaitHandle(true, EventResetMode.AutoReset);
         public string comportname = "COM1";
         public string stripSelected = "11 0,0,0,0,0,0,0,0";
-        public Byte strip = 0;
+        public int strip = 0;
 
         private List<TextBox> P1_450nm;
         private List<TextBox> P1_630nm;
@@ -201,13 +201,13 @@ namespace UtiSimulator
 
             }
             //Send strip selected
-            Byte striptemp = 0;
+            int striptemp = 0;
             temp = WriteAndReadCom(stripSelected);
             try
             {
-                striptemp = Convert.ToByte(temp, 16);
+                striptemp = int.Parse(temp);
             }
-            catch(ArgumentException)
+            catch(FormatException)
             {
                 MessageBox.Show("Error while receiving back No of Strips Selected");
                 return;
@@ -341,7 +341,7 @@ namespace UtiSimulator
         {
             string temp;
             int no_of_results = 16;
-            temp = WriteAndReadCom("11");
+            temp = WriteAndReadCom("11 ");
             if (temp.Equals("NACK"))
             {
                 SetText("Error System did not respond");
@@ -463,6 +463,7 @@ namespace UtiSimulator
            
             int count = 0;
             stripSelected = "11 ";
+            strip = 0;
             foreach (CheckBox ch in checkBoxes)
             {
                 if(ch.Checked)
@@ -521,12 +522,12 @@ namespace UtiSimulator
                     case "P-i absorbance":
                         list450 = Pi_450nm;
                         list630 = Pi_630nm;
-                        checkBoxes[0].Checked = true;
+                        //checkBoxes[0].Checked = true;
                         break;
                     case "P-iN absorbance":
                         list450 = PiN_450nm;
                         list630 = PiN_630nm;
-                        checkBoxes[0].Checked = true;
+                        //checkBoxes[0].Checked = true;
                         break;
                     case "P-1 absorbance":
                         list450 = P1_450nm;
@@ -686,6 +687,8 @@ namespace UtiSimulator
                     }
                 }
             }
+            // Send Temperature
+            temp = WriteAndReadCom("17 " + textBoxRoomTemp.Text);
             SetText("Panel Identification Pi Data Sent to UTI Card..");
             using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
             {
@@ -1045,6 +1048,27 @@ namespace UtiSimulator
 
 
             }//loop ends here
+
+            // Read back room temperature and verify
+            temp = WriteAndReadCom("18 ");
+            int roomtemp=0, roomtemp2 = 0;
+            try
+            {
+                roomtemp = int.Parse(temp);
+                roomtemp2 = int.Parse(textBoxRoomTemp.Text);
+            }catch(FormatException etem)
+            {
+                MessageBox.Show(etem.Message.ToString());
+
+            }
+            if(roomtemp != roomtemp2)
+            {
+                textBoxRoomTemp.BackColor = Color.LightPink;
+            }
+            else
+            {
+                textBoxRoomTemp.BackColor = Color.LightGreen;
+            }
             SetText("Data Verification Done....");
             using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
             {
