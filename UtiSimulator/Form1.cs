@@ -66,6 +66,9 @@ namespace UtiSimulator
 
         private void OnLoadForm(object sender, EventArgs e)
         {
+            Point loc = new Point(1027, 170);
+            dataGridView2.Location = loc;
+            dataGridView2.Size = new Size(new Point(304, 458));
             comboBoxMode.SelectedIndex = 0;
             comboBoxTestName.SelectedIndex = 0;
             populateTextBox();
@@ -592,7 +595,10 @@ namespace UtiSimulator
 
         private void buttonClearResults_Click(object sender, EventArgs e)
         {
+            dataGridView2.Rows.Clear();
             dataGridView1.Rows.Clear();
+            dataGridView2.Visible = false;
+            dataGridView1.Visible = true;
             SystemSounds.Beep.Play();
         }
         private String stripsSelected()
@@ -1153,6 +1159,35 @@ namespace UtiSimulator
         {
            
             textBoxSWver.Text = WriteAndReadCom("19 ");
+
+        }
+
+        private void buttonGetAntibioticName_Click(object sender, EventArgs e)
+        {
+
+            String command,temp;
+            dataGridView1.Visible = false;
+            dataGridView2.Visible = true;
+            String[] results = new String[3];
+            int sr = 1;
+            for(int k =1; k<7; k++)
+            {
+                dataGridView2.Rows.Add(" ", "Panel-Number: " + k.ToString(), " ");
+                for (int p = 0; p < 7; p++)
+                {
+                    command = String.Format("{0:2} {1:D2} {2:D2}", "15", k, p);
+                    temp = WriteAndReadCom(command);
+
+                    results[0] = sr++.ToString("00");
+                    results[1] = temp;
+
+                    dataGridView2.Rows.Add(results);
+                }
+                dataGridView2.Rows.Add(" ", " ", " ");
+               
+            }
+           
+
 
         }
     }
