@@ -66,6 +66,8 @@ namespace UtiSimulator
 
         private void OnLoadForm(object sender, EventArgs e)
         {
+            comboBoxMode.SelectedIndex = 0;
+            comboBoxTestName.SelectedIndex = 0;
             populateTextBox();
             comboBox_COMPORT.BeginUpdate();
             comboBox_COMPORT.Items.Clear();
@@ -200,6 +202,12 @@ namespace UtiSimulator
                     return;
 
             }
+
+            // Send selected Test Name
+            int TestName = comboBoxTestName.SelectedIndex+1;
+            String comm = "20 " + TestName.ToString("00");
+            temp = WriteAndReadCom(comm);
+
             //Send strip selected
             int striptemp = 0;
             temp = WriteAndReadCom(stripSelected);
@@ -609,6 +617,7 @@ namespace UtiSimulator
 
         private void buttonSendPi_Click(object sender, EventArgs e)
         {
+            
             if (serp.IsOpen == false)
             {
                 MessageBox.Show("Please connect to comm");
@@ -639,16 +648,23 @@ namespace UtiSimulator
             switch(index)
             {
                 case 0:
-                    temp = WriteAndReadCom("03 00");
+                    temp = WriteAndReadCom("03 00");    //Send command 03 00 Mono chromatic mode
                     break;
                 case 1:
-                    temp = WriteAndReadCom("03 01");
+                    temp = WriteAndReadCom("03 01");    //Send command 03 01 Bi chromatic mode
                     break;
                 case -1:
                     MessageBox.Show("Please select a valid Mode");
                     return;            
 
             }
+
+            // Send selected Test Name
+            int TestName = comboBoxTestName.SelectedIndex+1;
+            String comm = "20 "  + TestName.ToString("00");
+            temp = WriteAndReadCom(comm);
+
+
             // Send Pi450nm Send Pi630nm Send PiN450nm Send PiN630nm
             List<TextBox> mylist = new List<TextBox>();
 
@@ -687,8 +703,7 @@ namespace UtiSimulator
                     }
                 }
             }
-            // Send Temperature
-            temp = WriteAndReadCom("17 " + textBoxRoomTemp.Text);
+         
             SetText("Panel Identification Pi Data Sent to UTI Card..");
             using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
             {
@@ -719,6 +734,20 @@ namespace UtiSimulator
             {
                 comboBoxMode.BackColor = Color.LightGreen;
             }
+
+            // Read TEST NAME SELECTED
+            temp = WriteAndReadCom("21 ");
+            mode = int.Parse(temp);
+            Mode = comboBoxTestName.SelectedIndex + 1;
+            if (mode != Mode)
+            {
+                comboBoxTestName.BackColor = Color.LightPink;
+            }
+            else
+            {
+                comboBoxTestName.BackColor = Color.LightGreen;
+            }
+
 
             Boolean cflag = false;
             List<TextBox> mylistvf = new List<TextBox>();
@@ -885,10 +914,30 @@ namespace UtiSimulator
             char[] splitchar = { ',' };
             string[] results = { "01", " ", " " };
             temp = WriteAndReadCom("13 00");            // Organism Name
-            results[1] = "Organism Name"; results[2] = temp;
-            dataGridView1.Rows.Add(results);
+            String[] tempbacteria = temp.Split(splitchar);
+            if(tempbacteria.Length >=2)
+            {
+                results[1] = "Organism Name 1"; results[2] = tempbacteria[0];
+                dataGridView1.Rows.Add(results);
+                results[0] = "02"; results[1] = "Organism Name 2"; results[2] = tempbacteria[1];
+                dataGridView1.Rows.Add(results);
+            }
+            else
+            {
+                results[1] = "Organism Name:"; results[2] = tempbacteria[0];
+                dataGridView1.Rows.Add(results);
+            }            
+            
             temp = WriteAndReadCom("13 01");            // Cell Volume
-            results[0] = "02"; results[1] = "Volume"; results[2] = temp;
+            if (tempbacteria.Length >= 2)
+            {
+                results[0] = "03"; results[1] = "Volume"; results[2] = temp;
+            }
+            else
+            {
+                results[0] = "02"; results[1] = "Volume"; results[2] = temp;
+            }
+                
             dataGridView1.Rows.Add(results);
             int sr = 1;
             Boolean cflag = false;
@@ -993,6 +1042,22 @@ namespace UtiSimulator
             {
                 comboBoxMode.BackColor = Color.LightGreen;
             }
+
+            // Read TEST NAME SELECTED
+            temp = WriteAndReadCom("21 ");
+            mode = int.Parse(temp);
+            Mode = comboBoxTestName.SelectedIndex+1;
+            if (mode != Mode)
+            {
+                comboBoxTestName.BackColor = Color.LightPink;
+            }
+            else
+            {
+                comboBoxTestName.BackColor = Color.LightGreen;
+            }
+
+
+
             //Read back Pi data and verify
             for (int olp = 0; olp < 4; olp++)
             {
@@ -1048,27 +1113,7 @@ namespace UtiSimulator
 
 
             }//loop ends here
-
-            // Read back room temperature and verify
-            temp = WriteAndReadCom("18 ");
-            int roomtemp=0, roomtemp2 = 0;
-            try
-            {
-                roomtemp = int.Parse(temp);
-                roomtemp2 = int.Parse(textBoxRoomTemp.Text);
-            }catch(FormatException etem)
-            {
-                MessageBox.Show(etem.Message.ToString());
-
-            }
-            if(roomtemp != roomtemp2)
-            {
-                textBoxRoomTemp.BackColor = Color.LightPink;
-            }
-            else
-            {
-                textBoxRoomTemp.BackColor = Color.LightGreen;
-            }
+         
             SetText("Data Verification Done....");
             using (var soundPlayer = new SoundPlayer(@"c:\Windows\Media\Windows Print complete.wav"))
             {
@@ -1104,20 +1149,11 @@ namespace UtiSimulator
             return;
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void buttonSWver_Click(object sender, EventArgs e)
         {
-            double y = 0.0;
-            string res = WriteAndReadCom("16 ");
-            try
-            {
-                y = float.Parse(res);
-            }catch(FormatException)
-            {
-                MessageBox.Show(" NAN");
-                return;
-            }
+           
+            textBoxSWver.Text = WriteAndReadCom("19 ");
 
-            MessageBox.Show(y.ToString(format: "0.0000"));
         }
     }
 

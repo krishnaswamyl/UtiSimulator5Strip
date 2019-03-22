@@ -207,10 +207,11 @@
             this.sno = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.antibiotic = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.result = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.textBoxRoomTemp = new System.Windows.Forms.TextBox();
+            this.comboBoxTestName = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
+            this.textBoxSWver = new System.Windows.Forms.TextBox();
+            this.buttonSWver = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -843,7 +844,7 @@
             // 
             this.buttonPaste.BackColor = System.Drawing.Color.Yellow;
             this.buttonPaste.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.5F);
-            this.buttonPaste.Location = new System.Drawing.Point(6, 440);
+            this.buttonPaste.Location = new System.Drawing.Point(6, 513);
             this.buttonPaste.Name = "buttonPaste";
             this.buttonPaste.Size = new System.Drawing.Size(306, 36);
             this.buttonPaste.TabIndex = 61;
@@ -855,7 +856,7 @@
             // 
             this.buttonExit.BackColor = System.Drawing.Color.Tomato;
             this.buttonExit.Font = new System.Drawing.Font("MS Reference Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonExit.Location = new System.Drawing.Point(117, 487);
+            this.buttonExit.Location = new System.Drawing.Point(141, 615);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(93, 36);
             this.buttonExit.TabIndex = 62;
@@ -1991,7 +1992,7 @@
             // 
             this.textBoxPiResult.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxPiResult.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.textBoxPiResult.Location = new System.Drawing.Point(123, 76);
+            this.textBoxPiResult.Location = new System.Drawing.Point(123, 111);
             this.textBoxPiResult.Name = "textBoxPiResult";
             this.textBoxPiResult.Size = new System.Drawing.Size(223, 29);
             this.textBoxPiResult.TabIndex = 209;
@@ -2002,7 +2003,7 @@
             this.label7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.MediumSeaGreen;
-            this.label7.Location = new System.Drawing.Point(29, 82);
+            this.label7.Location = new System.Drawing.Point(29, 117);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(88, 22);
             this.label7.TabIndex = 205;
@@ -2064,44 +2065,68 @@
             this.result.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.result.Width = 90;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(80, 529);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(165, 23);
-            this.button1.TabIndex = 211;
-            this.button1.Text = "STD DEV OF Pi450";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(20, 117);
+            this.label20.Location = new System.Drawing.Point(26, 78);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(97, 16);
+            this.label20.Size = new System.Drawing.Size(91, 16);
             this.label20.TabIndex = 205;
-            this.label20.Text = "Room Temp:";
+            this.label20.Text = "Select Test:";
             // 
-            // textBoxRoomTemp
+            // comboBoxTestName
             // 
-            this.textBoxRoomTemp.Location = new System.Drawing.Point(123, 116);
-            this.textBoxRoomTemp.Name = "textBoxRoomTemp";
-            this.textBoxRoomTemp.Size = new System.Drawing.Size(100, 20);
-            this.textBoxRoomTemp.TabIndex = 212;
-            this.textBoxRoomTemp.Text = "28";
+            this.comboBoxTestName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBoxTestName.FormattingEnabled = true;
+            this.comboBoxTestName.Items.AddRange(new object[] {
+            "1-URINE",
+            "2-Peritoneal fluid",
+            "3-SPUTUM",
+            "4-BLOOD",
+            "5-PUS",
+            "6-CSF",
+            "7-Ascites",
+            "8-Scrapping",
+            "9-SWAB",
+            "10-OTHERS"});
+            this.comboBoxTestName.Location = new System.Drawing.Point(123, 76);
+            this.comboBoxTestName.Name = "comboBoxTestName";
+            this.comboBoxTestName.Size = new System.Drawing.Size(141, 24);
+            this.comboBoxTestName.TabIndex = 211;
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(229, 112);
+            this.label24.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label24.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.ForeColor = System.Drawing.Color.DarkCyan;
+            this.label24.Location = new System.Drawing.Point(5, 425);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(31, 24);
+            this.label24.Size = new System.Drawing.Size(82, 22);
             this.label24.TabIndex = 205;
-            this.label24.Text = "°C";
+            this.label24.Text = "S/W Ver:";
+            // 
+            // textBoxSWver
+            // 
+            this.textBoxSWver.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSWver.ForeColor = System.Drawing.Color.DarkCyan;
+            this.textBoxSWver.Location = new System.Drawing.Point(99, 419);
+            this.textBoxSWver.Name = "textBoxSWver";
+            this.textBoxSWver.Size = new System.Drawing.Size(223, 29);
+            this.textBoxSWver.TabIndex = 209;
+            // 
+            // buttonSWver
+            // 
+            this.buttonSWver.BackColor = System.Drawing.Color.YellowGreen;
+            this.buttonSWver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSWver.Location = new System.Drawing.Point(145, 459);
+            this.buttonSWver.Name = "buttonSWver";
+            this.buttonSWver.Size = new System.Drawing.Size(132, 29);
+            this.buttonSWver.TabIndex = 212;
+            this.buttonSWver.Text = "Get S/W Version";
+            this.buttonSWver.UseVisualStyleBackColor = false;
+            this.buttonSWver.Click += new System.EventHandler(this.buttonSWver_Click);
             // 
             // Form1
             // 
@@ -2109,18 +2134,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.ClientSize = new System.Drawing.Size(1343, 684);
-            this.Controls.Add(this.textBoxRoomTemp);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonSWver);
+            this.Controls.Add(this.comboBoxTestName);
             this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.textBoxSWver);
             this.Controls.Add(this.textBoxPiResult);
             this.Controls.Add(this.buttonReceivePiData);
             this.Controls.Add(this.buttonValidatePi);
             this.Controls.Add(this.buttonSendPi);
             this.Controls.Add(this.comboBoxMode);
             this.Controls.Add(this.No_of_Mins);
-            this.Controls.Add(this.label24);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label3);
+            this.Controls.Add(this.label24);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label2);
@@ -2473,9 +2499,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn sno;
         private System.Windows.Forms.DataGridViewTextBoxColumn antibiotic;
         private System.Windows.Forms.DataGridViewTextBoxColumn result;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox textBoxRoomTemp;
+        private System.Windows.Forms.ComboBox comboBoxTestName;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.TextBox textBoxSWver;
+        private System.Windows.Forms.Button buttonSWver;
     }
 }
