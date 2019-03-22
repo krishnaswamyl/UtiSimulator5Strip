@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox_COMPORT = new System.Windows.Forms.ComboBox();
             this.button_OpenPort = new System.Windows.Forms.Button();
@@ -212,9 +212,14 @@
             this.label24 = new System.Windows.Forms.Label();
             this.textBoxSWver = new System.Windows.Forms.TextBox();
             this.buttonSWver = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.buttonGetAntibioticName = new System.Windows.Forms.Button();
+            this.s_no = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -2028,14 +2033,14 @@
             this.sno,
             this.antibiotic,
             this.result});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Green;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Green;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Location = new System.Drawing.Point(1027, 170);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(304, 458);
@@ -2128,15 +2133,49 @@
             this.buttonSWver.UseVisualStyleBackColor = false;
             this.buttonSWver.Click += new System.EventHandler(this.buttonSWver_Click);
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.s_no,
+            this.name});
+            this.dataGridView2.Location = new System.Drawing.Point(1027, 487);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.Size = new System.Drawing.Size(304, 150);
+            this.dataGridView2.TabIndex = 213;
+            this.dataGridView2.Visible = false;
+            // 
+            // buttonGetAntibioticName
+            // 
+            this.buttonGetAntibioticName.BackColor = System.Drawing.Color.Goldenrod;
+            this.buttonGetAntibioticName.Location = new System.Drawing.Point(1098, 109);
+            this.buttonGetAntibioticName.Name = "buttonGetAntibioticName";
+            this.buttonGetAntibioticName.Size = new System.Drawing.Size(150, 23);
+            this.buttonGetAntibioticName.TabIndex = 214;
+            this.buttonGetAntibioticName.Text = "Get Antibiotic Names";
+            this.buttonGetAntibioticName.UseVisualStyleBackColor = false;
+            this.buttonGetAntibioticName.Click += new System.EventHandler(this.buttonGetAntibioticName_Click);
+            // 
+            // s_no
+            // 
+            this.s_no.HeaderText = "S.No";
+            this.s_no.Name = "s_no";
+            // 
+            // name
+            // 
+            this.name.HeaderText = "ANTIBIOTIC NAME";
+            this.name.Name = "name";
+            this.name.Width = 200;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.OldLace;
             this.ClientSize = new System.Drawing.Size(1343, 684);
+            this.Controls.Add(this.buttonGetAntibioticName);
             this.Controls.Add(this.buttonSWver);
             this.Controls.Add(this.comboBoxTestName);
-            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.textBoxSWver);
             this.Controls.Add(this.textBoxPiResult);
             this.Controls.Add(this.buttonReceivePiData);
@@ -2307,6 +2346,8 @@
             this.Controls.Add(this.buttonGetASTresult);
             this.Controls.Add(this.buttonValidateASTdata);
             this.Controls.Add(this.buttonSend);
+            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.dataGridView1);
             this.Name = "Form1";
             this.Text = "UTI SIMULATOR";
             this.Load += new System.EventHandler(this.OnLoadForm);
@@ -2315,6 +2356,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2504,5 +2546,9 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TextBox textBoxSWver;
         private System.Windows.Forms.Button buttonSWver;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Button buttonGetAntibioticName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn s_no;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
     }
 }
