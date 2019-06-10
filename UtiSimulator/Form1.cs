@@ -145,7 +145,7 @@ namespace UtiSimulator
                 serp.ReadTimeout = 1000;
                 Thread.Sleep(100);
                 
-                temp = WriteAndReadCom("20 ");  // Send Default Command
+                temp = WriteAndReadCom("24 ");  // Send Default Command
                 if (read_timeout_flag == false)
                 {
                     //Communication Successful with UTI card.
@@ -171,7 +171,7 @@ namespace UtiSimulator
                 serp.Close();
                 button_OpenPort.Text = "Open Port";
                 button_OpenPort.BackColor = Color.YellowGreen;
-                SetText("Com Port Closed:.......");
+                SetText("Com Port Closed:  .......");
             }
         }
 
@@ -302,7 +302,7 @@ namespace UtiSimulator
             }
 
                 // Send Pi450nm and Pi630nm
-                for (olp = 0; olp < 2; olp++)
+                for (olp = 0; olp < 4; olp++)
                 {
                     cflag = false;
                     switch (olp)
@@ -311,11 +311,22 @@ namespace UtiSimulator
                             mylist = Pi_450nm;
                             break;
                         case 1:
-                            if (index == 0) { cflag = true; }
+                            if (index == 0)
+                            { cflag = true; }
                             mylist = Pi_630nm;
                             break;
-                    }
-                    if (cflag == true) continue;
+                        case 2:
+                            mylist = PiN_450nm;
+                            break;
+                        case 3:
+                            if (index == 0)
+                            { cflag = true; }
+                            mylist = PiN_630nm;
+                            break;
+
+
+                    };
+                if (cflag == true) continue;
                     temp = "05 " + (olp + 1);           // case 5: to send Pi data. 1 to 4
                     temp = WriteAndReadCom(temp);
                     for (lp = 0; lp < 8; lp++)
@@ -338,15 +349,8 @@ namespace UtiSimulator
             return;
         }
 
-        private void buttonVerify_Click(object sender, EventArgs e)
-        {
-            
-        }
+       
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-           
-        }
 
         private void buttonGetResults_Click(object sender, EventArgs e)
         {
@@ -757,7 +761,7 @@ namespace UtiSimulator
 
             Boolean cflag = false;
             List<TextBox> mylistvf = new List<TextBox>();
-            
+            Mode = comboBoxMode.SelectedIndex;
             for (int olp = 0; olp < 12; olp++)
             {
                 cflag = false;
@@ -847,7 +851,7 @@ namespace UtiSimulator
 
             }//loop ends here
             //Read back Pi data and verify
-            for (int olp = 0; olp < 2; olp++)
+            for (int olp = 0; olp < 4; olp++)
             {
                 cflag = false;
                 switch (olp)
@@ -859,8 +863,15 @@ namespace UtiSimulator
                         if (Mode == 0) { cflag = true; }
                         mylistvf = Pi_630nm;
                         break;
+                    case 2:                       
+                        mylistvf = PiN_450nm;
+                        break;
+                    case 3:
+                        if (Mode == 0) { cflag = true; }
+                        mylistvf = PiN_630nm;
+                        break;
 
-                }
+                };
                 if (cflag == true) continue;
                 for (int lp = 0; lp < 8; lp++)
                 {
@@ -1164,7 +1175,11 @@ namespace UtiSimulator
 
         private void buttonGetAntibioticName_Click(object sender, EventArgs e)
         {
-
+            if (serp.IsOpen == false)
+            {
+                MessageBox.Show("Please connect to comm");
+                return;
+            }
             String command,temp;
             dataGridView1.Visible = false;
             dataGridView2.Visible = true;
